@@ -1,7 +1,6 @@
 package com.snowresorts.location.infrastructure.messaging;
 
 import com.snowresorts.location.domain.port.AvatarCache;
-import java.time.Duration;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Component;
 public class RedisAvatarCache implements AvatarCache {
 
     static final String KEY_PREFIX = "avatar:";
-    private static final Duration TTL = Duration.ofMinutes(5);
 
     private final StringRedisTemplate redisTemplate;
 
@@ -27,10 +25,5 @@ public class RedisAvatarCache implements AvatarCache {
     @Override
     public Optional<String> get(UUID userId) {
         return Optional.ofNullable(redisTemplate.opsForValue().get(KEY_PREFIX + userId));
-    }
-
-    @Override
-    public void put(UUID userId, String avatarUrl) {
-        redisTemplate.opsForValue().set(KEY_PREFIX + userId, avatarUrl, TTL);
     }
 }
